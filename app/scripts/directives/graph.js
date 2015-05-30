@@ -89,8 +89,8 @@ angular.module('graphApp')
                 .attr('width', '32')
                 .attr('height', '32')
                 .on('mouseout', function () {
-                  d3.select(this)
-                    .transition()
+                  var self = d3.select(this);
+                  self.transition()
                     .duration(400)
                     .attr('width', '32')
                     .attr('height', '32')
