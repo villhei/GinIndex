@@ -1,0 +1,184 @@
+/* Space out content a bit */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: white;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+.bar-votes {
+  stroke: white;
+  stroke-width: 1px;
+  fill-opacity: .7;
+}
+
+.bar-votes rect:hover{
+  fill-opacity: .85;
+}
+
+.bar-votes-number {
+  stroke-width: 0 !important;
+  font-size: 3em;
+  font-weight: 400;
+  fill: white !important;
+}
+
+.bar-votes-partyname {
+  stroke-width: 0 !important;
+  font-size: 2em;
+  font-weight: 400;
+  fill: white !important;
+}
+
+.bar-males {
+  fill: #4179e0;
+}
+
+.bar-women {
+  fill: #ff2c6c;
+
+}
+.bar-total {
+  fill: #5fff27;
+}
+
+.domain {
+  fill: white;
+}
+
+.tick {
+  fill: white;
+  font-weight: 400 !important;
+}
+
+.tick line {
+  stroke-width: 1;
+  stroke: white;
+}
+
+.bar-chart {
+  background-color: rgba(0,0,0,0.4);
+  border: 1px solid white;
+  margin: 5px;
+}
+
+.bar-chart * {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.men span {
+  background-color: #4179e0;
+}
+
+.women span {
+background-color: #ff2c6c;
+}
+
+.total span {
+ background-color: #5fff27;
+}
+
+.center-buttons {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+.box {
+  display: inline-block;
+  min-width: 15px;
+  height: 15px;
+  border: 1px solid white;
+  margin-right: 5px;
+}
+
+.social {
+  opacity: 0.7;
+}
+.social:hover{
+  opacity: 1;
+}
