@@ -116,6 +116,7 @@ body {
 }
 
 .domain {
+  stroke-width: 1;
   fill: white;
 }
 
@@ -133,6 +134,40 @@ body {
   background-color: rgba(0,0,0,0.4);
   border: 1px solid white;
   margin: 5px;
+}
+
+.popup {
+  fill: rgba(255,255,255,0.2);
+  stroke: #ffffff;
+  stroke-width: 1pt;
+}
+.popup-header {
+  fill: #ffffff;
+  font-size: 25pt;
+  font-weight: 400 !important;
+
+}
+
+.popup-text {
+  fill: #ffffff;
+  font-size: 10pt;
+  font-weight: 400 !important;
+}
+
+.axis-label {
+  fill: #ffffff;
+  font-size: 15pt;
+  font-weight: 400 !important;
+}
+
+.label-y {
+  writing-mode: tb;
+}
+
+.domain {
+  fill: transparent;
+  stroke-width: 1pt;
+  stroke: #ffffff;
 }
 
 .bar-chart * {

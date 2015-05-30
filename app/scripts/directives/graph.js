@@ -28,6 +28,22 @@ angular.module('graphApp')
               img: 'resources/flags_64/' + d['CountryCode'] + '.png',
               id: d['CountryCode'],
               label: d['Country'],
+              details: [{
+                key: 'BKT:n muutos:  ',
+                value: (parseFloat(d['GDP growth'])*100).toFixed(0) + ' %'
+              },
+                {
+                  key: 'BKT 1990:  ',
+                  value: d['1990'] + ' €'
+                },
+                {
+                  key: 'BKT 2013:  ',
+                  value: d['2013'] + ' €'
+                },
+                {
+                  key: 'Gini-kerroin: ',
+                  value: d['Gini']
+                }],
               x: d['Gini'],
               y: parseFloat(d['GDP growth']) * 100
             };
@@ -63,7 +79,26 @@ angular.module('graphApp')
 
           var group_plots = chart.append('svg:g');
 
-          var group_toplevel = chart.append('svg:g');
+          var group_toplevel = chart.append('svg:g')
+            .attr('class', 'topmost');
+
+          group_toplevel.append('svg:rect')
+            .attr('class', 'popup')
+            .attr('x', offset_x * 2)
+            .attr('y', offset_y * 2);
+
+          group_toplevel.append('svg:g')
+            .attr('id', 'text-container');
+
+          group_toplevel.append('svg:text')
+            .attr('text-anchor', 'middle')
+            .attr('class', 'axis-label label-y')
+            .text('BKT:n muutos (%)');
+
+          group_toplevel.append('svg:text')
+            .attr('text-anchor', 'middle')
+            .attr('class', 'axis-label label-x')
+            .text('Gini-kerroin');
 
           group_plots.selectAll('.point')
             .data(data)
@@ -78,7 +113,36 @@ angular.module('graphApp')
 
           group_plots.selectAll('.point').each(function (d) {
             d3.select(this).on('mouseover', function (d) {
-              var popup = chart
+
+              var popupTexts = group_toplevel.select('#text-container')
+                .append('svg:text')
+                .attr('opacity', 0)
+                .attr('text-anchor', 'middle')
+                .attr('x', offset_x * 2 + scope.dimensions.width * 0.15)
+                .attr('y', offset_y * 2.7)
+                .attr('class', 'popup-text');
+              popupTexts.append('svg:tspan')
+                .attr('x', offset_x * 2 + scope.dimensions.width * 0.15)
+                .attr('class', 'popup-header')
+                .text(d.label);
+              d.details.forEach(function (elem) {
+                popupTexts.append('svg:tspan')
+                  .attr('x', offset_x * 2 + scope.dimensions.width * 0.15)
+                  .attr('dy', '1.3em')
+                  .text(elem.key + ' ' + elem.value);
+              });
+
+              group_toplevel.selectAll('.popup')
+                .transition()
+                .duration(400)
+                .attr('opacity', 1);
+
+              popupTexts
+                .transition()
+                .duration(400)
+                .attr('opacity', 1);
+
+              var popupFlag = chart
                 .append('svg:g')
                 .attr('id', d.id)
                 .append('image')
@@ -100,7 +164,21 @@ angular.module('graphApp')
                       if (self && self.remove) {
                         self.remove();
                       }
-                    })
+                    });
+
+                  group_toplevel.select('#text-container')
+                    .selectAll('text')
+                    .transition()
+                    .duration(400)
+                    .attr('opacity', 0)
+                    .each('end', function() {
+                      d3.select(this).remove();
+                    }
+                  );
+                  group_toplevel.selectAll('.popup')
+                    .transition()
+                    .duration(400)
+                    .attr('opacity', 0);
                 })
                 .transition()
                 .duration(400)
@@ -108,7 +186,6 @@ angular.module('graphApp')
                 .attr('y', scale_y(d.y) - 16)
                 .attr('width', '64')
                 .attr('height', '64');
-
               chart.select('#' + d.id)
                 .on('mouseout', function () {
                   var self = d3.select(this);
@@ -121,7 +198,22 @@ angular.module('graphApp')
                     .attr('y', scale_y(d.y))
                     .each('end', function () {
                       self.remove();
-                    })
+                    });
+
+                  group_toplevel.select('#text-container')
+                    .selectAll('text')
+                    .transition()
+                    .duration(400)
+                    .attr('opacity', 0)
+                    .each('end', function() {
+                      d3.select(this).remove();
+                    }
+                  );
+
+                  group_toplevel.selectAll('.popup')
+                    .transition()
+                    .duration(400)
+                    .attr('opacity', 0);
                 });
             });
 
@@ -135,7 +227,8 @@ angular.module('graphApp')
             axis_y: axis_y,
             group_x: group_x,
             group_y: group_y,
-            group_plots: group_plots
+            group_plots: group_plots,
+            group_toplevel: group_toplevel
           }
         }
 
@@ -143,17 +236,17 @@ angular.module('graphApp')
           scene.scale_x.domain([0, d3.max(scene.data, function (d) {
             return d.x;
           }) * 1.2])
-            .range([offset_x, scope.dimensions.width - offset_x]);
+            .range([offset_x*2, scope.dimensions.width - offset_x]);
 
           scene.scale_y.domain([0, d3.max(scene.data, function (d) {
             return d.y;
           }) * 1.2])
-            .range([scope.dimensions.height - offset_y, offset_y]);
+            .range([scope.dimensions.height - offset_y*2, offset_y]);
 
-          scene.group_x.attr('transform', 'translate(' + [0, scope.dimensions.height - offset_y] + ')')
+          scene.group_x.attr('transform', 'translate(' + [0, scope.dimensions.height - offset_y*2] + ')')
             .call(scene.axis_x);
 
-          scene.group_y.attr('transform', 'translate(' + [offset_x, 0] + ')')
+          scene.group_y.attr('transform', 'translate(' + [offset_x*2, 0] + ')')
             .call(scene.axis_y);
 
           scene.group_plots.selectAll('.point')
@@ -164,9 +257,25 @@ angular.module('graphApp')
               return scene.scale_y(d.y);
             })
             .attr('r', 10);
+
+          scene.group_toplevel.selectAll('.label-x')
+            .attr('x', scope.dimensions.width/2)
+            .attr('y', scope.dimensions.height - offset_y/2);
+
+          scene.group_toplevel.selectAll('.label-y')
+            .attr('x', offset_y*0.5)
+            .attr('y', scope.dimensions.height/2);
+
+          scene.group_toplevel.selectAll('.popup')
+            .attr('opacity', 0)
+            .attr('width', scope.dimensions.width * 0.3)
+            .attr('height', scope.dimensions.height * 0.2);
+
+          scene.group_toplevel.selectAll('.popup-text')
+            .attr('x', offset_x * 2 + scope.dimensions.width * 0.15)
+            .attr('y', offset_y * 3)
+            .attr('text-anchor', 'middle');
         }
       }
     }
-  }
-)
-;
+  });

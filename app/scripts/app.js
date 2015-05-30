@@ -10,8 +10,6 @@
  */
 
 console.log('** Hello there **');
-console.log('**** Data parsed from http://www.vaalit.fi dataset');
-console.log('**** d3.js, angular and Scala-conversion scripts');
 
 angular
   .module('aanestApp', [
