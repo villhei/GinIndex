@@ -76,7 +76,6 @@ angular.module('graphApp')
             .attr('width', '32')
             .attr('height', '32');
 
-
           group_plots.selectAll('.point').each(function (d) {
             d3.select(this).on('mouseover', function (d) {
               var popup = chart
@@ -89,10 +88,24 @@ angular.module('graphApp')
                 .attr('y', scale_y(d.y))
                 .attr('width', '32')
                 .attr('height', '32')
+                .on('mouseout', function () {
+                  d3.select(this)
+                    .transition()
+                    .duration(400)
+                    .attr('width', '32')
+                    .attr('height', '32')
+                    .attr('x', scale_x(d.x))
+                    .attr('y', scale_y(d.y))
+                    .each('end', function () {
+                      if (self && self.remove) {
+                        self.remove();
+                      }
+                    })
+                })
                 .transition()
                 .duration(400)
-                .attr('x', scale_x(d.x)-16)
-                .attr('y', scale_y(d.y)-16)
+                .attr('x', scale_x(d.x) - 16)
+                .attr('y', scale_y(d.y) - 16)
                 .attr('width', '64')
                 .attr('height', '64');
 
